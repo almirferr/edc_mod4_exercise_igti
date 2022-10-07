@@ -12,7 +12,7 @@ SparkConf()
 
 # apply config
 sc = SparkContext(conf=conf).getOrCreate()
-    
+
 
 if __name__ == "__main__":
 

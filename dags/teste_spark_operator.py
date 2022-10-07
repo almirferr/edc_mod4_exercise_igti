@@ -25,6 +25,7 @@ dag = DAG(
     catchup=False,
 )
 
+
 t1 = SparkKubernetesOperator(
     task_id='spark_pi_submit',
     namespace="airflow",
