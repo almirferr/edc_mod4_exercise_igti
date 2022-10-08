@@ -24,24 +24,29 @@ if __name__ == "__main__":
 
     spark.sparkContext.setLogLevel("WARN")
 
-    df = (
-        spark
-        .read
-        .format("csv")
-        .options(header='true', inferSchema='true', delimiter=';')
-#        .load("s3a://dl-landing-zone-539445819060/enem/")
-        .load("s3://dl-landing-zone-539445819059/teste/")
-    )
-    
-    df.printSchema()
+    print("*****************")
+    print("Iniciando!!!")
+    print("*****************")
 
-    (df
-    .write
-    .mode("overwrite")
-    .format("parquet")
-#    .save("s3a://dl-processing-zone-539445819060/enem/")
-    .save("s3://dl-processing-zone-539445819059/teste/")    
-    )
+
+#    df = (
+#        spark
+#        .read
+#        .format("csv")
+#        .options(header='true', inferSchema='true', delimiter=';')
+##        .load("s3a://dl-landing-zone-539445819060/enem/")
+#        .load("s3://dl-landing-zone-539445819059/teste/")
+#    )
+#    
+#    df.printSchema()
+#
+#    (df
+#    .write
+#    .mode("overwrite")
+#    .format("parquet")
+##    .save("s3a://dl-processing-zone-539445819060/enem/")
+#    .save("s3://dl-processing-zone-539445819059/teste/")    
+#    )
 
     print("*****************")
     print("Escrito com sucesso!")
