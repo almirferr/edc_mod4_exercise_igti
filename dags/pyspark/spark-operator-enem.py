@@ -30,7 +30,7 @@ if __name__ == "__main__":
     url = 'https://raw.githubusercontent.com/almirferr/edc_mod4_exercise_igti/dev/titanic.csv'
     from pyspark import SparkFiles
     spark.sparkContext.addFile(url)
-    df = spark.read.csv(SparkFiles.get("titanic.csv"), header=True)
+    df = spark.read.csv("file://"+SparkFiles.get("titanic.csv"), header=True, inferSchema=True, delimiter=';')
 #    df = (
 #        spark
 #        .read
