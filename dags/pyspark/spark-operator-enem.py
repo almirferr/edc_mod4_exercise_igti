@@ -2,35 +2,39 @@ from pyspark import SparkContext, SparkConf
 from pyspark.sql import SparkSession
 
 # set conf
-conf = (
-SparkConf()
-    .set("spark.hadoop.fs.s3a.fast.upload", True)
-    .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-    .set('spark.hadoop.fs.s3a.aws.credentials.provider', 'com.amazonaws.auth.EnvironmentVariableCredentialsProvider')
-    .set('spark.jars.packages', 'org.apache.hadoop:hadoop-aws:2.7.3')
-)
+#conf = (
+#SparkConf()
+#    .set("spark.hadoop.fs.s3a.fast.upload", True)
+#    .set("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+#    .set('spark.hadoop.fs.s3a.aws.credentials.provider', 'com.amazonaws.auth.EnvironmentVariableCredentialsProvider')
+#    .set('spark.jars.packages', 'org.apache.hadoop:hadoop-aws:2.7.3')
+#)
 
 # apply config
-sc = SparkContext(conf=conf).getOrCreate()
+#sc = SparkContext(conf=conf).getOrCreate()
 
 if __name__ == "__main__":
 
     # init spark session
-    spark = SparkSession\
-            .builder\
-            .appName("Repartition Job")\
-            .getOrCreate()
+#    spark = SparkSession\
+#            .builder\
+#            .appName("Repartition Job")\
+#            .getOrCreate()
 
-    spark.sparkContext.setLogLevel("WARN")
+#    spark.sparkContext.setLogLevel("WARN")
 
     print("*****************")
     print("Iniciando!!!")
     print("*****************")
 
-    url = 'https://raw.githubusercontent.com/almirferr/edc_mod4_exercise_igti/dev/titanic.csv'
     from pyspark import SparkFiles
+    spark = SparkSession.builder.getOrCreate()
+
+    url = 'https://raw.githubusercontent.com/almirferr/edc_mod4_exercise_igti/dev/titanic.csv'
     spark.sparkContext.addFile(url)
-    df = spark.read.csv("file://"+SparkFiles.get("titanic.csv"), header=True, inferSchema=True)
+    df = spark.read.csv(SparkFiles.get('titanic.csv'), header=True, inferSchema=True)
+
+    df.limit(5).show()
 #    df = (
 #        spark
 #        .read
