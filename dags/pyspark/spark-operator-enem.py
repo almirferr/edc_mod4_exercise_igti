@@ -32,6 +32,10 @@ if __name__ == "__main__":
 
     url = 'https://raw.githubusercontent.com/almirferr/edc_mod4_exercise_igti/dev/titanic.csv'
     spark.sparkContext.addFile(url)
+
+    import time
+    time.sleep(30)
+
     df = spark.read.csv(SparkFiles.get('titanic.csv'), header=True, inferSchema=True)
 
     df.limit(5).show()
