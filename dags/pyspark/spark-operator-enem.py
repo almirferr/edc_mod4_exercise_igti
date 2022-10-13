@@ -16,10 +16,10 @@ from pyspark.sql import SparkSession
 if __name__ == "__main__":
 
     # init spark session
-#    spark = SparkSession\
-#            .builder\
-#            .appName("Repartition Job")\
-#            .getOrCreate()
+    spark = SparkSession\
+            .builder\
+            .appName("Repartition Job")\
+            .getOrCreate()
 
 #    spark.sparkContext.setLogLevel("WARN")
 
@@ -27,18 +27,39 @@ if __name__ == "__main__":
     print("Iniciando!!!")
     print("*****************")
 
-    from pyspark import SparkFiles
-    spark = SparkSession.builder.getOrCreate()
+#    import findspark
+#    findspark.init()
+#    from pyspark.sql import SparkSession
+#    spark = SparkSession.builder.appName('GCSFilesReadWrite').getOrCreate()
 
-    url = 'https://raw.githubusercontent.com/almirferr/edc_mod4_exercise_igti/dev/titanic.csv'
-    spark.sparkContext.addFile(url)
+    print("hadoopConfiguration!")
+    spark._jsc.hadoopConfiguration().set("google.cloud.auth.service.account.json.keyfile","c:\gcp-secret-keys.json")
 
-    import time
-    time.sleep(30)
+    print("read csv gs!")
+    df=spark.read.csv(f"gs://abf_edc_bootcamp_data/ITENS_PROVA_2019.csv", header=True, sep=";")
+    df.show()
 
-    df = spark.read.csv(SparkFiles.get('titanic.csv'), header=True, inferSchema=True)
+    print("write gs!")
+    df.write.mode("overwrite").format("parquet").save(f"gs://abf_edc_bootcamp_data/parquet/") 
 
-    df.limit(5).show()
+    print("read parquet gs!")
+    df2=spark.read.parquet(f"gs://abf_edc_bootcamp_data/parquet")
+
+    df2.show()
+
+
+#    from pyspark import SparkFiles
+#    spark = SparkSession.builder.getOrCreate()
+
+#   url = 'https://raw.githubusercontent.com/almirferr/edc_mod4_exercise_igti/dev/titanic.csv'
+#   spark.sparkContext.addFile(url)
+
+#    import time
+#    time.sleep(30)
+
+#    df = spark.read.csv(SparkFiles.get('titanic.csv'), header=True, inferSchema=True)
+
+#    df.limit(5).show()
 #    df = (
 #        spark
 #        .read
@@ -48,7 +69,7 @@ if __name__ == "__main__":
 #        .load("https://raw.githubusercontent.com/almirferr/edc_mod4_exercise_igti/dev/titanic.csv")
 #    )
     
-    df.printSchema()
+#    df.printSchema()
 #
 #    (df
 #    .write
